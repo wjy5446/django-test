@@ -71,7 +71,7 @@ class AllBorrowedBooksListView(PermissionRequiredMixin, generic.ListView):
 
 class BookListView(generic.ListView):
     model = Book
-    paginate_by = 2
+    paginate_by = 10
 
 
 class BookDetailView(generic.DetailView):
@@ -80,7 +80,7 @@ class BookDetailView(generic.DetailView):
 
 class AuthorListView(generic.ListView):
     model = Author
-    paginate_by = 5
+    paginate_by = 10
 
 
 class AuthorDetailView(generic.DetailView):
