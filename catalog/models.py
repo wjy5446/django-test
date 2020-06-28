@@ -81,7 +81,7 @@ class BookInstance(models.Model):
         permissions = (("can_mark_returned", "Set book as returned"),)
 
     def __str__(self):
-        return f"{self.id} ({self.book.title})"
+        return "{} ({})".format(self.id, self.book.title)
 
     @property
     def is_overdue(self):
@@ -103,4 +103,4 @@ class Author(models.Model):
         return reverse("author-detail", args=[str(self.id)])
 
     def __str__(self):
-        return f"{self.last_name}, {self.first_name}"
+        return "{}, {}".format(self.last_name, self.first_name)
