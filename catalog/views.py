@@ -12,11 +12,13 @@ from catalog.forms import RenewBookForm
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib.auth.decorators import permission_required
 
+
 class BookCreate(PermissionRequiredMixin, CreateView):
     model = Book
     fields = '__all__'
 
     permission_required = 'catalog.can_mark_returned'
+
 
 class BookUpdate(PermissionRequiredMixin, UpdateView):
     model = Book
@@ -24,18 +26,21 @@ class BookUpdate(PermissionRequiredMixin, UpdateView):
 
     permission_required = 'catalog.can_mark_returned'
 
+
 class BookDelete(PermissionRequiredMixin, DeleteView):
     model = Book
     success_url = reverse_lazy('books')
 
     permission_required = 'catalog.can_mark_returned'
 
+
 class AuthorCreate(PermissionRequiredMixin, CreateView):
     model = Author
     fields = '__all__'
-    initial={'date_of_death':'05/01/2018',}
+    initial = {'date_of_death': '05/01/2018', }
 
     permission_required = 'catalog.can_mark_returned'
+
 
 class AuthorUpdate(PermissionRequiredMixin, UpdateView):
     model = Author
@@ -43,11 +48,13 @@ class AuthorUpdate(PermissionRequiredMixin, UpdateView):
 
     permission_required = 'catalog.can_mark_returned'
 
+
 class AuthorDelete(PermissionRequiredMixin, DeleteView):
     model = Author
     success_url = reverse_lazy('authors')
 
     permission_required = 'catalog.can_mark_returned'
+
 
 class LoanedBooksByUserListView(LoginRequiredMixin, generic.ListView):
     model = BookInstance
@@ -104,7 +111,7 @@ def index(request):
         'num_author': num_author,
         'num_visits': num_visits
     }
-    
+
     return render(request, 'catalog/index.html', context=context)
 
 
@@ -119,7 +126,7 @@ def renew_book_librarian(request, pk):
         # 유효성 체크
         if book_renewal_form.is_valid():
             # form.cleaned_data 데이터를 요청받은대로 처리
-            book_instance.due_back = book_renewal_form.cleaned_data['renewal_date']
+            book_instance.due_back = book_renewal_form.cleaned_data['due_back']
             book_instance.save()
 
             # 새로운 URL를 보냄
@@ -128,7 +135,7 @@ def renew_book_librarian(request, pk):
     else:
         proposed_renewal_date = datetime.date.today() + datetime.timedelta(weeks=3)
         book_renewal_form = RenewBookForm(
-            initial={'renewal_date': proposed_renewal_date})
+            initial={'due_back': proposed_renewal_date})
 
     context = {
         'form': book_renewal_form,
